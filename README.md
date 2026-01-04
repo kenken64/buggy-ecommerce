@@ -1,16 +1,34 @@
-# React + Vite
+# Buggy E-commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple shopping cart application built with Express.js and Tailwind CSS that contains an intentional bug for demonstration purposes.
 
-Currently, two official plugins are available:
+## The Bug
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+In `server.js:31`, the "Laptop Stand" product has its price as a **string** instead of a number:
 
-## React Compiler
+```javascript
+{ id: 3, name: 'Laptop Stand', price: "49.99", ... } // BUG: price is a string!
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+When calculating the total, adding a number to a string causes string concatenation, resulting in **NaN** being displayed.
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+Visit http://localhost:3000
+
+## To Reproduce the Bug
+
+1. Add "Wireless Headphones" ($79.99) to cart - total shows correctly
+2. Add "Laptop Stand" ($49.99) to cart - **total shows $NaN**
+
+## Tech Stack
+
+- Express.js
+- EJS templating
+- Tailwind CSS (CDN)
+- express-session for cart storage
