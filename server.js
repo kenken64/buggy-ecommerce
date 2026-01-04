@@ -2,6 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { calculateTotal } from './cart.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,13 +34,6 @@ const products = [
   { id: 4, name: 'USB-C Hub', price: 34.99, color: '#f59e0b', icon: 'hub' },
   { id: 5, name: 'Mechanical Keyboard', price: 129.99, color: '#ef4444', icon: 'keyboard' },
 ];
-
-// BUG: This calculation fails when a price is a string
-// Adding a number to a string results in string concatenation, then further operations produce NaN
-function calculateTotal(cart) {
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
-  return Number(total).toFixed(2);
-}
 
 // Routes
 app.get('/', (req, res) => {
